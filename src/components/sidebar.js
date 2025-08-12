@@ -1,10 +1,15 @@
 import React from 'react'
+import { Button } from '@mui/material'
 function Sidebar() {
 
 
     return (
     <div className="sidebar">
         <h2>Sidebar</h2>
+        <Button variant="contained" color="secondary" >
+         My button
+        </Button>
+
 
     </div>
   );
