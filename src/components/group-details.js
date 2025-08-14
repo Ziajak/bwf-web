@@ -1,26 +1,16 @@
 import React, {useState, useEffect} from 'react'
 import { Link, useParams } from 'react-router-dom';
-import { getGroup } from "../services/group-services";
+import { useFetchGroup } from "../hooks/fetch-group";
 function GroupDetails() {
 
     const { id } = useParams();
-
+    const [data, loading, error] = useFetchGroup(id);
     const [group, setGroup] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
 
     useEffect(()=>{
+        setGroup(data);
 
-        setLoading(true);
-        const getData = async() => {
-            await getGroup(id).then( data => {
-                setLoading(false);
-                setGroup(data);
-            })
-
-        }
-        getData();
-    }, [])
+    }, [data])
 
     if (error) return  <h1>Error</h1>
     if (loading) return <h1>Loading...</h1>
@@ -28,7 +18,9 @@ function GroupDetails() {
     return (
         <div>
             <Link to={'/'}>Back</Link>
-            <h1>Details here for group {id}</h1>
+            {group &&
+            <h1>{group.name} {id}</h1>
+                }
         </div>
   );
 }
