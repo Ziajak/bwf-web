@@ -2,6 +2,9 @@ import React, {useState, useEffect} from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { useFetchGroup } from "../hooks/fetch-group";
 import {DateTime} from "luxon";
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
+
 
 function GroupDetails() {
 
@@ -33,8 +36,7 @@ function GroupDetails() {
 
                         return <div key={event.id}>
                             <p>{event.team1} VS {event.team2}</p>
-                            <p>{event.time}</p>
-                            <p>{evtTime.toSQLDate()} {evtTime.toFormat('HH:mm')}</p>
+                            <p><CalendarTodayIcon/> {evtTime.toSQLDate()} <AccessAlarmIcon/>{evtTime.toFormat('HH:mm')}</p>
                         </div>
                     })}
                 </React.Fragment>
