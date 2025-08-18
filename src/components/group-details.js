@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { useFetchGroup } from "../hooks/fetch-group";
+import {DateTime} from "luxon";
+
 function GroupDetails() {
 
     const { id } = useParams();
@@ -24,10 +26,15 @@ function GroupDetails() {
                     <h2>{group.description} </h2>
 
                     <h3>Events:</h3>
+
                     { group.events.map(event=> {
+                        const format = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+                        const evtTime = DateTime.fromFormat(event.time, format)
+
                         return <div key={event.id}>
                             <p>{event.team1} VS {event.team2}</p>
                             <p>{event.time}</p>
+                            <p>{evtTime.toSQLDate()} {evtTime.toFormat('HH:mm')}</p>
                         </div>
                     })}
                 </React.Fragment>
