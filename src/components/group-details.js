@@ -4,7 +4,23 @@ import { useFetchGroup } from "../hooks/fetch-group";
 import {DateTime} from "luxon";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
+import { styled } from "@mui/material/styles";
 
+// Stylowane ikony
+const StyledCalendarIcon = styled(CalendarTodayIcon)(({ theme }) => ({
+  fontSize: "18px",
+  marginRight: "3px",
+  marginTop: "10px",
+  color: theme.colors.mainAccentColor
+
+}));
+
+const StyledAlarmIcon = styled(AccessAlarmIcon)(({ theme }) => ({
+  fontSize: "18px",
+  marginRight: "3px",
+  marginTop: "10px",
+  color: theme.colors.mainAccentColor
+}));
 
 function GroupDetails() {
 
@@ -36,7 +52,10 @@ function GroupDetails() {
 
                         return <div key={event.id}>
                             <p>{event.team1} VS {event.team2}</p>
-                            <p><CalendarTodayIcon/> {evtTime.toSQLDate()} <AccessAlarmIcon/>{evtTime.toFormat('HH:mm')}</p>
+                            <p>
+                                <StyledCalendarIcon/> {evtTime.toSQLDate()}
+                                <StyledAlarmIcon/> {evtTime.toFormat('HH:mm')}
+                            </p>
                         </div>
                     })}
                 </React.Fragment>
