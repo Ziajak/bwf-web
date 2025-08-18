@@ -19,7 +19,18 @@ function GroupDetails() {
         <div>
             <Link to={'/'}>Back</Link>
             {group &&
-            <h1>{group.name} {id}</h1>
+                <React.Fragment>
+                    <h1>{group.name} {group.location} </h1>
+                    <h2>{group.description} </h2>
+
+                    <h3>Events:</h3>
+                    { group.events.map(event=> {
+                        return <div key={event.id}>
+                            <p>{event.team1} VS {event.team2}</p>
+                            <p>{event.time}</p>
+                        </div>
+                    })}
+                </React.Fragment>
                 }
         </div>
   );

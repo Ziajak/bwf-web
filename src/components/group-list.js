@@ -34,7 +34,8 @@ function GroupList() {
           return <Link key={group.id} to={`/details/${group.id}`}>
                 <p>{group.name}: {group.location}</p>
             </Link>
-            })
+            }
+            )
       }
     </div>
   );
