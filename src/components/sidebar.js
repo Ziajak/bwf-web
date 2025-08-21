@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
+import { auth } from '../services/user-services';
 function Sidebar() {
 
     const  [ username, setUsername ] = useState('');
@@ -11,7 +12,9 @@ function Sidebar() {
 
     const  handleSubmit = async e => {
         e.preventDefault();
-        console.log(username, password);
+        // console.log(username, password);
+        const authData = await auth({username, password})
+        console.log(authData);
 
     }
 
