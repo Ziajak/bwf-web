@@ -10,7 +10,7 @@ import { AuthProvider } from "./hooks/useAuth";
 
 function App() {
 
-    const user = "MyUser";
+     const user = JSON.parse(localStorage.getItem('btw-user'));
 
     return (
     <ThemeProvider theme={theme}>

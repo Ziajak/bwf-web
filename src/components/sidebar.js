@@ -6,24 +6,31 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
 import { auth } from '../services/user-services';
 import { useAuth } from "../hooks/useAuth";
+import { Link } from 'react-router-dom';
 
 function Sidebar() {
 
     const [ username, setUsername ] = useState('');
     const [ password, setPassword ] = useState('');
-    const { authData, setAuthData} = useAuth();
+    const { authData, setAuth} = useAuth();
 
     const  handleSubmit = async e => {
         e.preventDefault();
         // console.log(username, password);
         const data = await auth({username, password})
-        setAuthData(data);
+        //setAuth(data);
+        //localStorage.setItem('btw-user', JSON.stringify(data));
+        setAuth(data);
 
+    }
+    const logout = () => {
+        setAuth(null);
     }
 
     return (
     <div className="sidebar">
-        { authData && <p>{ authData }</p>}
+        { !authData ?
+            <div>
         <form onSubmit={handleSubmit}>
          <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
             <AccountCircle sx={{ mr: 1, my: 0.5 }} />
@@ -42,8 +49,18 @@ function Sidebar() {
          <Button variant="contained" color="primary" type="submit">
           Login
          </Button>
-        </form>
 
+
+        </form>
+            <br/>
+            <Link to={'/register'}>Register here if you don't have an account yet</Link>
+            </div>
+       :
+            <div>
+                <p>{authData.user.username}</p>
+                <Button variant="contained" color="primary" onClick={()=> logout()}>Logout</Button>
+            </div>
+        }
     </div>
   );
 }
