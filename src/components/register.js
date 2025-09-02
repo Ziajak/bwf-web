@@ -3,9 +3,11 @@ import { useAuth } from "../hooks/useAuth";
 import {Link} from "react-router-dom";
 import Box from "@mui/material/Box";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import EmailIcon from '@mui/icons-material/Email';
 import TextField from "@mui/material/TextField";
 import KeyIcon from "@mui/icons-material/Key";
 import {Button} from "@mui/material";
+import {register} from "../services/user-services";
 import {auth} from "../services/user-services";
 function Register() {
 
@@ -22,7 +24,10 @@ function Register() {
     const handleSubmit = async e => {
         e.preventDefault();
         if(passMatch()){
-            console.log('all good', username, password, email)
+            const regData = await register({username, email, password, profile: {image: null}})
+            if(regData){
+                console.log(regData);
+            }
         } else {
             console.log('pass dont match')
         }
@@ -54,7 +59,7 @@ function Register() {
                         />
                     </Box>
                        <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
-                        <AccountCircle sx={{mr: 1, my: 0.5}}/>
+                        <EmailIcon sx={{mr: 1, my: 0.5}}/>
                         <TextField id="input-with-sx" label="Email" variant="standard"
                                    onChange={e => setEmail(e.target.value)}
                         />
