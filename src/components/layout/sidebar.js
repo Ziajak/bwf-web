@@ -4,8 +4,8 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
-import { auth } from '../services/user-services';
-import { useAuth } from "../hooks/useAuth";
+import { auth } from '../../services/user-services';
+import { useAuth } from "../../hooks/useAuth";
 import { Link } from 'react-router-dom';
 
 function Sidebar() {

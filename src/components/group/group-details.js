@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { Link, useParams } from 'react-router-dom';
-import { useFetchGroup } from "../hooks/fetch-group";
+import { useFetchGroup } from "../../hooks/fetch-group";
 import {DateTime} from "luxon";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
@@ -41,7 +41,7 @@ function GroupDetails() {
             <Link to={'/'}>Back</Link>
             {group &&
                 <React.Fragment>
-                    <h1>{group.name} {group.location} </h1>
+                    <h1>{group.name} {group.location}</h1>
                     <h2>{group.description} </h2>
 
                     <h3>Events:</h3>
