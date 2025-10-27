@@ -40,5 +40,18 @@ a {
   text-decoration: none;
 }
 
+.account-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 300px;
+}
+
+.account-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
 
 
