@@ -7,6 +7,17 @@ import KeyIcon from '@mui/icons-material/Key';
 import { auth } from '../../services/user-services';
 import { useAuth } from "../../hooks/useAuth";
 import { Link } from 'react-router-dom';
+import User from "../user/user";
+import { styled } from '@mui/material/styles';
+
+const MyBox = styled('div')(({ theme }) => ({
+        with: '100px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        position: 'relative'
+
+}));
 
 function Sidebar() {
 
@@ -57,9 +68,10 @@ function Sidebar() {
             </div>
        :
             <div>
-                <p>{authData.user.username}</p>
-                <img src={"http://127.0.0.1:8000/"+authData.user.profile.image} alt="user avatar" height="70" />
+                <MyBox>
+                <User user={authData.user}/>
                 <Button variant="contained" color="primary" onClick={()=> logout()}>Logout</Button>
+                </MyBox>
             </div>
         }
     </div>

@@ -5,6 +5,7 @@ import GroupDetails from "../group/group-details";
 import { useAuth } from "../../hooks/useAuth";
 import Register from "../user/register";
 import Account from "../user/account";
+import User from "../user/user";
 
 function Main() {
 
