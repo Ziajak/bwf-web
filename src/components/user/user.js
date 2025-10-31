@@ -4,7 +4,7 @@ import {Avatar, makeStyles} from "@mui/material";
 
 
 function User(user) {
-
+if (!user) return null;
 
     return (
         <div>

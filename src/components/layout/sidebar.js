@@ -11,12 +11,11 @@ import User from "../user/user";
 import { styled } from '@mui/material/styles';
 
 const MyBox = styled('div')(({ theme }) => ({
-        with: '100px',
+        width: '100px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         position: 'relative'
-
 }));
 
 function Sidebar() {
@@ -37,6 +36,7 @@ function Sidebar() {
     const logout = () => {
         setAuth(null);
     }
+
 
     return (
     <div className="sidebar">
@@ -72,6 +72,7 @@ function Sidebar() {
                 <User user={authData.user}/>
                 <Button variant="contained" color="primary" onClick={()=> logout()}>Logout</Button>
                 </MyBox>
+
             </div>
         }
     </div>
