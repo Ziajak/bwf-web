@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import {Avatar, makeStyles} from "@mui/material";
+import PropTypes from 'prop-types';
 
 
-
-function User(user) {
+export function User(user) {
 if (!user) return null;
 
     return (
@@ -15,4 +15,11 @@ if (!user) return null;
 
 }
 
-export default User;
+User.prototype = {
+    user: PropTypes.shape({
+        username: PropTypes.string.isRequired,
+        profile: PropTypes.shape({
+            image: PropTypes.string
+        }).isRequired
+    }).isRequired
+}

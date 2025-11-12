@@ -7,7 +7,7 @@ import KeyIcon from '@mui/icons-material/Key';
 import { auth } from '../../services/user-services';
 import { useAuth } from "../../hooks/useAuth";
 import { Link } from 'react-router-dom';
-import User from "../user/user";
+import { User } from "../user/user";
 import { styled } from '@mui/material/styles';
 
 const MyBox = styled('div')(({ theme }) => ({
@@ -31,7 +31,6 @@ function Sidebar() {
         //setAuth(data);
         //localStorage.setItem('btw-user', JSON.stringify(data));
         setAuth(data);
-
     }
     const logout = () => {
         setAuth(null);
@@ -66,7 +65,7 @@ function Sidebar() {
             <br/>
             <Link to={'/register'}>Register here if you don't have an account yet</Link>
             </div>
-       :
+:
             <div>
                 <MyBox>
                 <User user={authData.user}/>

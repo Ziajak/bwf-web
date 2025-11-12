@@ -9,11 +9,11 @@ import User from "../user/user";
 
 function Main() {
 
-    const { authData } = useAuth();
+    // const { authData } = useAuth();
 
     return (
     <div className="main">
-        { authData && authData.user.username}
+        {/*{ authData && authData.user.username}*/}
         <Routes>
             <Route path="/" element={<GroupList/>} />
             <Route path="/details/:id" element={<GroupDetails/>} />
