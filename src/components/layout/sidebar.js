@@ -6,9 +6,10 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
 import { auth } from '../../services/user-services';
 import { useAuth } from "../../hooks/useAuth";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { User } from "../user/user";
 import { styled } from '@mui/material/styles';
+
 
 const MyBox = styled('div')(({ theme }) => ({
         width: '100px',
@@ -23,6 +24,7 @@ function Sidebar() {
     const [ username, setUsername ] = useState('');
     const [ password, setPassword ] = useState('');
     const { authData, setAuth} = useAuth();
+    const navigate = useNavigate();
 
     const  handleSubmit = async e => {
         e.preventDefault();
@@ -34,6 +36,11 @@ function Sidebar() {
     }
     const logout = () => {
         setAuth(null);
+    }
+
+    const account = () => {
+
+        navigate('/account');
     }
 
 
@@ -65,11 +72,16 @@ function Sidebar() {
             <br/>
             <Link to={'/register'}>Register here if you don't have an account yet</Link>
             </div>
-:
+            :
             <div>
                 <MyBox>
                 <User user={authData.user}/>
                 <Button variant="contained" color="primary" onClick={()=> logout()}>Logout</Button>
+
+                    <Button variant="contained" color="primary" onClick={()=> account()}>My Account</Button>
+
+
+
                 </MyBox>
 
             </div>
