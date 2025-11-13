@@ -10,19 +10,22 @@ import {Button} from "@mui/material";
 import {register} from "../../services/user-services";
 import {auth} from "../../services/user-services";
 import {uploadAvatr} from "../../services/user-services";
+import {changePass} from "../../services/user-services";
+import { User } from "../user/user";
 
 function Account() {
 
     const {authData} = useAuth();
     const [image, setImage] = useState();
     // const [username, setUsername] = useState('');
-    // const [password, setPassword] = useState('');
-    // const [password2, setPassword2] = useState('');
+    const [oldPassword, setOldPassword] = useState('');
+    const [password, setNewPassword] = useState('');
+    const [password2, setNewPassword2] = useState('');
     // const [email, setEmail] = useState('');
 
-    // const passMatch = () => {
-    //     return password === password2;
-    // }
+    const passMatch = () => {
+        return password === password2;
+    }
 
     const uploadFile = async e => {
         e.preventDefault();
@@ -33,17 +36,50 @@ function Account() {
 
     }
 
+    const handleChangePass = async e => {
+        e.preventDefault();
+        if(passMatch()){
+            const chPass = await changePass({old_password: oldPassword, new_password: password}, authData.user.id)
 
+        } else {
+            console.log('pass dont match')
+        }
+
+
+    }
         return (
             <div className="account-wrapper">
                 <Link to={'/'}>Back</Link>
-                <h1>Account</h1>
+                <h1>Change your picture</h1>
                 <form onSubmit={uploadFile} className="account-form">
                     <label>
                         <p>Upload your avatar</p>
                         <TextField type="file" onChange={ e => setImage(e.target.files[0])}></TextField>
                     </label>
                 <Button type="submit" variant="contained" color="primary">Upload file</Button>
+                </form>
+            <br/>
+             <h1>Change your password</h1>
+                <form onSubmit={handleChangePass} className="pass-form">
+                     <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
+                        <KeyIcon sx={{mr: 1, my: 0.5}}/>
+                        <TextField id="input-with-sx" label="Old Password" variant="standard" type="password"
+                                   onChange={e => setOldPassword(e.target.value)}
+                        />
+                    </Box>
+                     <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
+                        <KeyIcon sx={{mr: 1, my: 0.5}}/>
+                        <TextField id="input-with-sx" label="New password" variant="standard" type="password"
+                                   onChange={e => setNewPassword(e.target.value)}
+                        />
+                    </Box>
+                     <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
+                        <KeyIcon sx={{mr: 1, my: 0.5}}/>
+                        <TextField id="input-with-sx" label="Repeat password" variant="standard" type="password"
+                                   onChange={e => setNewPassword2(e.target.value)}
+                        />
+                    </Box>
+                <Button type="submit" variant="contained" color="primary">Change password</Button>
                 </form>
 
             </div>

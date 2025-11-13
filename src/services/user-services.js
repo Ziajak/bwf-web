@@ -34,3 +34,16 @@ export function uploadAvatr(profileId, data) {
             console.log(e);
         })
 }
+
+export function changePass(userData, userId) {
+    return fetch(`http://127.0.0.1:8000/api/users/${userId}/change_pass/`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+    }).then(resp => resp.json())
+        .catch(e => {
+            console.log(e);
+        })
+}
