@@ -1,12 +1,16 @@
 import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom';
 import {getGroups} from "../../services/group-services";
+import {useAuth} from "../../hooks/useAuth";
+
 
 function GroupList() {
 
     const [groups, setGroups] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
+
+    const {authData} = useAuth();
 
     useEffect(()=>{
 

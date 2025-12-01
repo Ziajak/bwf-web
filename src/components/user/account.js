@@ -11,7 +11,7 @@ import {register} from "../../services/user-services";
 import {auth} from "../../services/user-services";
 import {uploadAvatr} from "../../services/user-services";
 import {changePass} from "../../services/user-services";
-import { User } from "../user/user";
+import { toast } from 'react-toastify';
 
 function Account() {
 
@@ -38,14 +38,23 @@ function Account() {
 
     const handleChangePass = async e => {
         e.preventDefault();
-        if(passMatch()){
-            const chPass = await changePass({old_password: oldPassword, new_password: password}, authData.user.id)
+        if(passMatch()) {
+            const PassData = await changePass({old_password: oldPassword, new_password: password},
+                authData.user.id,
+                authData.token)
+            console.log(PassData, "test")
+            if (PassData) {
+                toast.success('Password have been changed')
+                //
+                // } else if (PassData.message === 'Wrong old password'){
+                //     toast.error('Incorrect old password.');
+                // } else  toast.error('Unexpected server error.');
 
-        } else {
-            console.log('pass dont match')
+            } else {
+                toast.warning("Password don't match");
+            }
+
         }
-
-
     }
         return (
             <div className="account-wrapper">
