@@ -5,6 +5,7 @@ import {DateTime} from "luxon";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import { styled } from "@mui/material/styles";
+import { User } from '../user/user'
 
 // Stylowane ikony
 const StyledCalendarIcon = styled(CalendarTodayIcon)(({ theme }) => ({
@@ -14,6 +15,12 @@ const StyledCalendarIcon = styled(CalendarTodayIcon)(({ theme }) => ({
   color: theme.colors.mainAccentColor
 
 }));
+
+const MemberContainer  =  styled("div")(({ theme }) => ({
+    display: 'grid',
+    gridTemplateColumns: '100px auto'
+}));
+
 
 const StyledAlarmIcon = styled(AccessAlarmIcon)(({ theme }) => ({
   fontSize: "18px",
@@ -50,13 +57,28 @@ function GroupDetails() {
                         const format = "yyyy-MM-dd'T'HH:mm:ss'Z'";
                         const evtTime = DateTime.fromFormat(event.time, format)
 
-                        return <div key={event.id}>
+                        return <MemberContainer>
+                        <div key={event.id}>
                             <p>{event.team1} VS {event.team2}</p>
                             <p>
                                 <StyledCalendarIcon/> {evtTime.toSQLDate()}
                                 <StyledAlarmIcon/> {evtTime.toFormat('HH:mm')}
                             </p>
                         </div>
+                            </MemberContainer>
+                    })}
+
+                      <h3>Members:</h3>
+
+                    { group.members.map(member=> {
+
+                        return <div key={member.id}>
+                            <MemberContainer>
+                            <User user={member.user} />
+                            <p>{member.points} pts</p>
+                            </MemberContainer>
+                        </div>
+
                     })}
                 </React.Fragment>
                 }
