@@ -5,7 +5,10 @@ import {DateTime} from "luxon";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import { styled } from "@mui/material/styles";
-import { User } from '../user/user'
+import { User } from '../user/user';
+import {joinGroup} from "../../services/group-services";
+import { useAuth } from "../../hooks/useAuth";
+import { Button } from "@mui/material";
 
 // Stylowane ikony
 const StyledCalendarIcon = styled(CalendarTodayIcon)(({ theme }) => ({
@@ -31,6 +34,7 @@ const StyledAlarmIcon = styled(AccessAlarmIcon)(({ theme }) => ({
 
 function GroupDetails() {
 
+    const { authData} = useAuth();
     const { id } = useParams();
     const [data, loading, error] = useFetchGroup(id);
     const [group, setGroup] = useState(null);
@@ -39,6 +43,12 @@ function GroupDetails() {
         setGroup(data);
 
     }, [data])
+
+    const joinHere = () => {
+        joinGroup({user: authData.user.id, group: group.id}).then(
+            res => {console.log(res)}
+        )
+    }
 
     if (error) return  <h1>Error</h1>
     if (loading) return <h1>Loading...</h1>
@@ -50,6 +60,7 @@ function GroupDetails() {
                 <React.Fragment>
                     <h1>{group.name} {group.location}</h1>
                     <h2>{group.description} </h2>
+                    <Button onClick={()=> joinHere()} variant="contained" color="primary">Join Group</Button>
 
                     <h3>Events:</h3>
 
