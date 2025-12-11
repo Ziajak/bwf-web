@@ -6,7 +6,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import { styled } from "@mui/material/styles";
 import { User } from '../user/user';
-import {joinGroup} from "../../services/group-services";
+import {joinGroup, leaveGroup} from "../../services/group-services";
 import { useAuth } from "../../hooks/useAuth";
 import { Button } from "@mui/material";
 
@@ -38,14 +38,29 @@ function GroupDetails() {
     const { id } = useParams();
     const [data, loading, error] = useFetchGroup(id);
     const [group, setGroup] = useState(null);
+    const [isGroup, setInGroup] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(()=>{
+        if(data?.members){
+            if(authData?.user){
+                setInGroup(!!data.members.find( member => member.user.id === authData.user.id))
+                setIsAdmin(data.members.find( member => member.user.id === authData.user.id)?.admin)
+            }
+
+        }
         setGroup(data);
 
     }, [data])
 
     const joinHere = () => {
         joinGroup({user: authData.user.id, group: group.id}).then(
+            res => {console.log(res)}
+        )
+    }
+
+       const leaveHere = () => {
+        leaveGroup({user: authData.user.id, group: group.id}).then(
             res => {console.log(res)}
         )
     }
@@ -60,7 +75,14 @@ function GroupDetails() {
                 <React.Fragment>
                     <h1>{group.name} {group.location}</h1>
                     <h2>{group.description} </h2>
-                    <Button onClick={()=> joinHere()} variant="contained" color="primary">Join Group</Button>
+                    {isGroup ?
+                        <Button onClick={()=> leaveHere()} variant="contained" color="primary">Leave Group</Button>
+                        :
+                        <Button onClick={()=> joinHere()} variant="contained" color="primary">Join Group</Button>
+                    }
+
+
+
 
                     <h3>Events:</h3>
 
