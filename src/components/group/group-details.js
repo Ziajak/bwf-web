@@ -9,6 +9,7 @@ import { User } from '../user/user';
 import {joinGroup, leaveGroup} from "../../services/group-services";
 import { useAuth } from "../../hooks/useAuth";
 import { Button } from "@mui/material";
+import { Comments } from "../comments/comments";
 
 // Stylowane ikony
 const StyledCalendarIcon = styled(CalendarTodayIcon)(({ theme }) => ({
@@ -113,6 +114,8 @@ function GroupDetails() {
                         </div>
 
                     })}
+
+                    <Comments group={group}/>
                 </React.Fragment>
                 }
         </div>
