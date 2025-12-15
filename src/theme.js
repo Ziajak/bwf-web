@@ -9,7 +9,8 @@ const theme = createTheme({
     colors: {
         bgColor: '#3e3e3e',
         bgLightColor: '#888',
-        mainAccentColor: '#fecc01'
+        mainAccentColor: '#fecc01',
+        bgLighterColor: '#DADADA'
 }
 
 });
