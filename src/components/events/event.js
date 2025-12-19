@@ -1,0 +1,41 @@
+import React from "react";
+import {DateTime} from "luxon";
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
+import { styled } from "@mui/material/styles";
+
+// Stylowane ikony
+const StyledCalendarIcon = styled(CalendarTodayIcon)(({ theme }) => ({
+  fontSize: "18px",
+  marginRight: "3px",
+  marginTop: "10px",
+  color: theme.colors.mainAccentColor
+
+}));
+
+const MemberContainer  =  styled("div")(({ theme }) => ({
+    display: 'grid',
+    gridTemplateColumns: '100px auto'
+}));
+
+
+const StyledAlarmIcon = styled(AccessAlarmIcon)(({ theme }) => ({
+  fontSize: "18px",
+  marginRight: "3px",
+  marginTop: "10px",
+  color: theme.colors.mainAccentColor
+}));
+
+export function Event(){
+
+
+    return (
+        <React.Fragment>
+                <h3>Event info here:</h3>
+
+
+
+        </React.Fragment>
+
+    )
+}

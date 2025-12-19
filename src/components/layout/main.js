@@ -6,6 +6,7 @@ import { useAuth } from "../../hooks/useAuth";
 import Register from "../user/register";
 import Account from "../user/account";
 import User from "../user/user";
+import { Event } from "../events/event"
 
 function Main() {
 
@@ -17,6 +18,7 @@ function Main() {
         <Routes>
             <Route path="/" element={<GroupList/>} />
             <Route path="/details/:id" element={<GroupDetails/>} />
+            <Route path="/event/:id" element={<Event/>} />
             <Route path="/register" element={<Register/>}/>
             <Route path="/account" element={<Account/>}/>
         </Routes>
