@@ -35,25 +35,30 @@ export function Event(){
     const { id } = useParams();
     const [data, loading, error] = useFetchEvent(authData.token, id);
     const [event, setEvent] = useState(null);
+    const [evtTime, setEvTime] = useState(null);
 
-        useEffect(()=>{
-        if(data){
-             setEvent(data);
-        }
+    useEffect(()=> {
+        if (!data) return;
+
+        setEvent(data);
+        const format = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+        setEvTime(DateTime.fromFormat(data.time, format))
+
+
     }, [data])
+
+    if (error) return  <h1>Error</h1>
+    if (loading || !event )  return <h1>Loading...</h1>
+
+
+
     return (
         <React.Fragment>
-                <h3>Event info here:</h3>
-            {event && (
-                <>
-                    {event.team1} vs. {event.team2}
-                </>
-            )}
-
-
-
-
-
+            <h3>{event.team1} VS {event.team2}</h3>
+                <h2>
+                    <StyledCalendarIcon/> {evtTime.toSQLDate()}
+                    <StyledAlarmIcon/> {evtTime.toFormat('HH:mm')}
+                </h2>
         </React.Fragment>
 
     )
