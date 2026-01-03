@@ -33,22 +33,15 @@ export function Event(){
 
     const {authData} = useAuth();
     const { id } = useParams();
-    const [data, loading, error] = useFetchEvent(authData.token, id);
-    const [event, setEvent] = useState(null);
-    const [evtTime, setEvTime] = useState(null);
+    const [event, loading, error] = useFetchEvent(authData.token, id);
 
-    useEffect(()=> {
-        if (!data) return;
+    const format = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    const evtTime = event?.time ? DateTime.fromFormat(event.time, format)
+    : null;
 
-        setEvent(data);
-        const format = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-        setEvTime(DateTime.fromFormat(data.time, format))
-
-
-    }, [data])
 
     if (error) return  <h1>Error</h1>
-    if (loading || !event )  return <h1>Loading...</h1>
+    if (loading || !event)  return <h1>Loading...</h1>
 
 
 
