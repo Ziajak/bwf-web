@@ -1,23 +1,30 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getEvent } from "../services/event-services";
 
-export function useFetchEvent(token, eventId){
+export function useFetchEvent(token, eventId) {
+  const [event, setEvent] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-    const [event, setEvent] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
+  // 🔥 FUNKCJA DO (RE)FETCH
+  const fetchEvent = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(false);
 
-    useEffect(() => {
-        const getData = async() => {
-            setLoading(true);
-            const data = await getEvent(token, eventId);
-            setEvent(data);
-            setLoading(false);
-            setError(null);
-        }
-        getData();
-    }, [token, eventId]);
+      const data = await getEvent(token, eventId);
+      setEvent(data);
+    } catch (e) {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  }, [token, eventId]);
 
-    return [event, loading, error]
+  useEffect(() => {
+    fetchEvent();
+  }, [fetchEvent]);
 
+  // 🔥 ZWRACAMY fetchEvent
+  return [event, loading, error, fetchEvent];
 }

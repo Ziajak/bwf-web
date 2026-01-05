@@ -41,7 +41,9 @@ export function EventList({events}){
 
                 { events && events.map(event=> {
                     const format = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-                    const evtTime = DateTime.fromFormat(event.time, format)
+                    const evtTime = event?.time ? DateTime.fromFormat(event.time, format)
+                        : null;
+                    // const evtTime = DateTime.fromFormat(event.time, format)
 
                     return <MemberContainer>
                     <div key={event.id} onClick={()=> openEvent(event.id)}>

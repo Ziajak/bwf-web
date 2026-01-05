@@ -3,12 +3,14 @@ import {DateTime} from "luxon";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import { styled } from "@mui/material/styles";
-import { useParams} from "react-router-dom";
+import { Link, useParams} from "react-router-dom";
 import {useFetchEvent} from "../../hooks/fetch-event";
 import {useAuth} from "../../hooks/useAuth";
 import {User} from "../user/user";
 import TextField from "@mui/material/TextField";
 import {Button} from "@mui/material";
+import {placeBet} from "../../services/event-services";
+import { toast } from 'react-toastify';
 
 // Stylowane ikony
 const StyledCalendarIcon = styled(CalendarTodayIcon)(({ theme }) => ({
@@ -37,7 +39,7 @@ export function Event(){
 
     const {authData} = useAuth();
     const { id } = useParams();
-    const [event, loading, error] = useFetchEvent(authData.token, id);
+    const [event, loading, error, refetchEvent] = useFetchEvent(authData.token, id);
 
     const[score1, setScore1] = useState();
     const[score2, setScore2] = useState();
@@ -46,8 +48,21 @@ export function Event(){
     const evtTime = event?.time ? DateTime.fromFormat(event.time, format)
     : null;
 
-    const sendBet = () => {
-        console.log(score1, score2);
+    const sendBet = async () => {
+        const bet = await placeBet(authData.token, {score1, score2, 'event': event.id});
+        refetchEvent();
+        if(bet){
+            if(bet.new){
+                event.bets.push(bet.result)
+            } else {
+                const myBetIndex = event.bets.findIndex(el => el.user.id === bet.result.user.id)
+                event.bets[myBetIndex] = bet.result
+            }
+            toast.success(bet.message);
+
+            setScore1('');
+            setScore2('');
+        }
     }
 
 
@@ -58,6 +73,7 @@ export function Event(){
 
     return (
         <React.Fragment>
+            <Link to={`/details/${event.group}`}>Back</Link>
             <h3>{event.team1} VS {event.team2}</h3>
             {event.score1 >=0 && event.score2  >=0 && <h2>{event.score1} : {event.score2}</h2>}
 
@@ -77,10 +93,10 @@ export function Event(){
 
                     <hr/>
                     <br/>
-                    <TextField label="Score 1" type="number"
+                    <TextField label="Score 1" type="number" value={score1}
                 onChange={ e => setScore1(e.target.value)}/>
                     :
-                    <TextField label="Score 2" type="number"
+                    <TextField label="Score 2" type="number" value={score2}
                 onChange={ e => setScore2(e.target.value)}/>
                     <br/>
                     <Button variant="contained" color="primary"
