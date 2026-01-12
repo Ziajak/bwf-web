@@ -6,7 +6,7 @@ export function useFetchEvent(token, eventId) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  // 🔥 FUNKCJA DO (RE)FETCH
+  // FUNKCJA DO (RE)FETCH
   const fetchEvent = useCallback(async () => {
     try {
       setLoading(true);
@@ -25,6 +25,5 @@ export function useFetchEvent(token, eventId) {
     fetchEvent();
   }, [fetchEvent]);
 
-  // 🔥 ZWRACAMY fetchEvent
   return [event, loading, error, fetchEvent];
 }

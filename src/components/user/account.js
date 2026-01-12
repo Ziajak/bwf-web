@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import EmailIcon from '@mui/icons-material/Email';
 import TextField from "@mui/material/TextField";
+import { CssTextField } from "../layout/elements";
 import KeyIcon from "@mui/icons-material/Key";
 import {Button} from "@mui/material";
 import {register} from "../../services/user-services";
@@ -72,7 +73,10 @@ function Account() {
                 <form onSubmit={handleChangePass} className="pass-form">
                      <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
                         <KeyIcon sx={{mr: 1, my: 0.5}}/>
-                        <TextField id="input-with-sx" label="Old Password" variant="standard" type="password"
+                        <TextField id="input-with-sx"
+                                      label="Old Password"
+                                      variant="standard"
+                                      type="password"
                                    onChange={e => setOldPassword(e.target.value)}
                         />
                     </Box>
