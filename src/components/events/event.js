@@ -9,10 +9,11 @@ import {useAuth} from "../../hooks/useAuth";
 import {User} from "../user/user";
 import TextField from "@mui/material/TextField";
 import {Button} from "@mui/material";
-import {placeBet} from "../../services/event-services";
+import {placeBet, setResults} from "../../services/event-services";
 import { toast } from 'react-toastify';
 import {Navigate} from "react-router-dom";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+
 
 // Stylowane ikony
 const StyledCalendarIcon = styled(CalendarTodayIcon)(({ theme }) => ({
@@ -59,8 +60,8 @@ export function Event(){
         if(evtTime){
         setIsFuture(evtTime > DateTime.now());
         setTimeDiff(evtTime.toRelative());
-
         }
+
         }, [evtTime]);
 
 
@@ -91,6 +92,19 @@ export function Event(){
             setScore1('');
             setScore2('');
         }
+    }
+
+    const setScores = async() => {
+                const eventData = await setResults(authData.token, {score1, score2, 'event': event.id});
+        refetchEvent();
+        if(eventData){
+
+            toast.success("Scores has been set");
+
+            setScore1('');
+            setScore2('');
+        }
+
     }
 
 
@@ -126,21 +140,26 @@ export function Event(){
                     })}
 
                     <br/>
-            { isFuture && <div>
-                 <TextField label="Score 1" type="number" value={score1}
+            <TextField label="Score 1" type="number" value={score1}
                 onChange={ e => setScore1(e.target.value)}/>
                     :
                     <TextField label="Score 2" type="number" value={score2}
                 onChange={ e => setScore2(e.target.value)}/>
-                    <br/>
+
+            <div>
+                <br/>
+            { isFuture ?
+
                     <Button variant="contained" color="primary"
                     onClick={() => sendBet()} disabled={score1 === '' || score2 === ''}>Place bet</Button>
-            </div>}
 
+                :
 
+                <Button variant="contained" color="primary"
+                    onClick={() => setScores()} disabled={score1 === '' || score2 === ''}>Set Score</Button>
 
-
-
+                 }
+</div>
         </React.Fragment>
 
     )
