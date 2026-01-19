@@ -46,10 +46,24 @@ export function Event(){
     const [event, loading, error, refetchEvent] = useFetchEvent(authData?.token, id);
     const[score1, setScore1] = useState('');
     const[score2, setScore2] = useState('');
+    const [isFuture, setIsFuture] = useState(null);
+    const[timeDiff, setTimeDiff] = useState();
 
     const format = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-    const evtTime = event?.time ? DateTime.fromFormat(event.time, format)
-    : null;
+
+    const evtTime = event?.time
+      ? DateTime.fromFormat(event.time, format)
+      : null;
+
+    useEffect(() => {
+        if(evtTime){
+        setIsFuture(evtTime > DateTime.now());
+        setTimeDiff(evtTime.toRelative());
+
+        }
+        }, [evtTime]);
+
+
 
     useEffect(() => {
     if (!authData?.token) {
@@ -58,8 +72,6 @@ export function Event(){
     }
     }, [authData?.token]);
 
-
-        // redirect w renderze
     if (!authData?.token) {
         return <Navigate to="/" replace />;
     }
@@ -97,6 +109,7 @@ export function Event(){
                     <StyledCalendarIcon/> {evtTime.toSQLDate()}
                     <StyledAlarmIcon/> {evtTime.toFormat('HH:mm')}
                 </h2>
+            <h2>{timeDiff}</h2>
             <hr/>
             <br/>
             {event &&
@@ -113,7 +126,8 @@ export function Event(){
                     })}
 
                     <br/>
-                    <TextField label="Score 1" type="number" value={score1}
+            { isFuture && <div>
+                 <TextField label="Score 1" type="number" value={score1}
                 onChange={ e => setScore1(e.target.value)}/>
                     :
                     <TextField label="Score 2" type="number" value={score2}
@@ -121,6 +135,8 @@ export function Event(){
                     <br/>
                     <Button variant="contained" color="primary"
                     onClick={() => sendBet()} disabled={score1 === '' || score2 === ''}>Place bet</Button>
+            </div>}
+
 
 
 
