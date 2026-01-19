@@ -94,18 +94,24 @@ export function Event(){
         }
     }
 
-    const setScores = async() => {
-                const eventData = await setResults(authData.token, {score1, score2, 'event': event.id});
+    const setScores = async () => {
+        try {
+        const eventData = await setResults(authData.token, {
+          score1,
+          score2,
+          event: event.id,
+        });
+
         refetchEvent();
-        if(eventData){
+        toast.success("Scores have been set");
 
-            toast.success("Scores has been set");
-
-            setScore1('');
-            setScore2('');
-        }
-
-    }
+        setScore1('');
+        setScore2('');
+      }
+      catch (err) {
+        toast.error(err.message);
+      }
+     };
 
 
     if (error) return  <h1>Error</h1>
@@ -152,9 +158,7 @@ export function Event(){
 
                     <Button variant="contained" color="primary"
                     onClick={() => sendBet()} disabled={score1 === '' || score2 === ''}>Place bet</Button>
-
                 :
-
                 <Button variant="contained" color="primary"
                     onClick={() => setScores()} disabled={score1 === '' || score2 === ''}>Set Score</Button>
 

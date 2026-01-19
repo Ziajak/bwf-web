@@ -36,8 +36,8 @@ return fetch(`http://127.0.0.1:8000/api/events/`, {
     .then(status).catch(e => {console.log(e)})
 }
 
-export function setResults(token, item) {
-return fetch(`http://127.0.0.1:8000/api/events/${item.event}/set_result/`, {
+export async function setResults(token, item) {
+    const response = await fetch(`http://127.0.0.1:8000/api/events/${item.event}/set_results/`, {
     method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -45,5 +45,14 @@ return fetch(`http://127.0.0.1:8000/api/events/${item.event}/set_result/`, {
 
         },
         body: JSON.stringify(item)
-        }).then(status).catch(e => {console.log(e)})
+        }
+        );
+
+    const data = await response.json();
+
+      if (!response.ok) {
+    throw new Error(data.detail);
+  }
+
+  return data;
 }
