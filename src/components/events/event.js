@@ -11,6 +11,8 @@ import TextField from "@mui/material/TextField";
 import {Button} from "@mui/material";
 import {placeBet} from "../../services/event-services";
 import { toast } from 'react-toastify';
+import {Navigate} from "react-router-dom";
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 // Stylowane ikony
 const StyledCalendarIcon = styled(CalendarTodayIcon)(({ theme }) => ({
@@ -37,16 +39,30 @@ const StyledAlarmIcon = styled(AccessAlarmIcon)(({ theme }) => ({
 
 export function Event(){
 
+
+
     const {authData} = useAuth();
     const { id } = useParams();
-    const [event, loading, error, refetchEvent] = useFetchEvent(authData.token, id);
-
-    const[score1, setScore1] = useState();
-    const[score2, setScore2] = useState();
+    const [event, loading, error, refetchEvent] = useFetchEvent(authData?.token, id);
+    const[score1, setScore1] = useState('');
+    const[score2, setScore2] = useState('');
 
     const format = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     const evtTime = event?.time ? DateTime.fromFormat(event.time, format)
     : null;
+
+    useEffect(() => {
+    if (!authData?.token) {
+        toast.error("You must log in", { toastId: "auth-error" });
+
+    }
+    }, [authData?.token]);
+
+
+        // redirect w renderze
+    if (!authData?.token) {
+        return <Navigate to="/" replace />;
+    }
 
     const sendBet = async () => {
         const bet = await placeBet(authData.token, {score1, score2, 'event': event.id});
@@ -73,7 +89,7 @@ export function Event(){
 
     return (
         <React.Fragment>
-            <Link to={`/details/${event.group}`}>Back</Link>
+            <Link to={`/details/${event.group}`}><ChevronLeftIcon/></Link>
             <h3>{event.team1} VS {event.team2}</h3>
             {event.score1 >=0 && event.score2  >=0 && <h2>{event.score1} : {event.score2}</h2>}
 
@@ -83,15 +99,19 @@ export function Event(){
                 </h2>
             <hr/>
             <br/>
-            {event && event.bets && event.bets.map(bet => {
-                return <div key={bet.id}>
+            {event &&
+                event.bets
+                && event.bets.map(bet => {
+                    return <div key={bet.id}>
                     <Bets>
                     <User user={bet.user}/>
                         <h4>{bet.score1} : {bet.score2}</h4>
                         <h4>PTS</h4>
                     </Bets>
-
                     <hr/>
+                        </div>
+                    })}
+
                     <br/>
                     <TextField label="Score 1" type="number" value={score1}
                 onChange={ e => setScore1(e.target.value)}/>
@@ -100,11 +120,11 @@ export function Event(){
                 onChange={ e => setScore2(e.target.value)}/>
                     <br/>
                     <Button variant="contained" color="primary"
-                    onClick={() => sendBet()} disabled={!score1 || !score2}>Place bet</Button>
+                    onClick={() => sendBet()} disabled={score1 === '' || score2 === ''}>Place bet</Button>
 
-                    </div>
 
-            })}
+
+
         </React.Fragment>
 
     )

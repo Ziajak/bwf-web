@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useFetchGroup } from "../../hooks/fetch-group";
-
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { User } from '../user/user';
 import {joinGroup, leaveGroup} from "../../services/group-services";
 import { useAuth } from "../../hooks/useAuth";
@@ -59,7 +59,7 @@ function GroupDetails() {
 
     return (
         <div>
-            <Link to={'/'}>Back</Link>
+            <Link to={'/'}><ChevronLeftIcon/></Link>
             {group &&
                 <React.Fragment>
                     <h1>{group.name} {group.location}</h1>
