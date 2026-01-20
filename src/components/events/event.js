@@ -27,7 +27,26 @@ const StyledCalendarIcon = styled(CalendarTodayIcon)(({ theme }) => ({
 const Bets  =  styled("div")(({ theme }) => ({
     display: 'grid',
     gridTemplateColumns: '2fr 1fr 1fr',
-    margin: '5px 0 0 0'
+    margin: '5px 0 0 0',
+    justifyItems: 'center'
+}));
+
+const Container  =  styled("div")(({ theme }) => ({
+    textAlign: 'center'
+
+}));
+
+const Back  =  styled("div")(({ theme }) => ({
+    float: 'left',
+    clear: 'both'
+
+}));
+
+const Accent  =  styled("span")(({ theme }) => ({
+    color: theme.palette.primary.main,
+    fontSize: '15px'
+
+
 }));
 
 
@@ -120,9 +139,9 @@ export function Event(){
 
 
     return (
-        <React.Fragment>
-            <Link to={`/details/${event.group}`}><ChevronLeftIcon/></Link>
-            <h3>{event.team1} VS {event.team2}</h3>
+        <Container>
+            <Back><Link to={`/details/${event.group}`}><ChevronLeftIcon/></Link></Back>
+           <h3>{event.team1}  <Accent>VS</Accent> {event.team2}</h3>
             {event.score1 >=0 && event.score2  >=0 && <h2>{event.score1} : {event.score2}</h2>}
 
                 <h2>
@@ -130,16 +149,18 @@ export function Event(){
                     <StyledAlarmIcon/> {evtTime.toFormat('HH:mm')}
                 </h2>
             <h2>{timeDiff}</h2>
+            <div>
             <hr/>
             <br/>
+
             {event &&
                 event.bets
                 && event.bets.map(bet => {
                     return <div key={bet.id}>
-                    <Bets>
+                        <Bets>
                     <User user={bet.user}/>
                         <h4>{bet.score1} : {bet.score2}</h4>
-                        <h4>PTS</h4>
+                        <h4>{bet.points}pts</h4>
                     </Bets>
                     <hr/>
                         </div>
@@ -152,7 +173,7 @@ export function Event(){
                     <TextField label="Score 2" type="number" value={score2}
                 onChange={ e => setScore2(e.target.value)}/>
 
-            <div>
+
                 <br/>
             { isFuture ?
 
@@ -163,8 +184,9 @@ export function Event(){
                     onClick={() => setScores()} disabled={score1 === '' || score2 === ''}>Set Score</Button>
 
                  }
-</div>
-        </React.Fragment>
+
+                </div>
+        </Container>
 
     )
 }
