@@ -9,18 +9,21 @@ import { Button } from "@mui/material";
 import { Comments } from "../comments/comments";
 import { EventList } from "../events/event-list";
 import {styled} from "@mui/material/styles";
+import { useMediaQuery } from "@mui/material";
 
 
 const MemberContainer  =  styled("div")(({ theme }) => ({
     display: 'grid',
-    gridTemplateColumns: '100px auto'
+    gridTemplateColumns: 'auto 5fr 1fr',
+    alignItems: 'center'
 }));
 
 function GroupDetails() {
 
     const { authData} = useAuth();
     const { id } = useParams();
-    const [data, loading, error] = useFetchGroup(id);
+    const [refresh, setRefresh] = useState(0);
+    const [data, loading, error, refetchGroup] = useFetchGroup(id);
     const [group, setGroup] = useState(null);
     const [isGroup, setInGroup] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
@@ -39,16 +42,18 @@ function GroupDetails() {
     }, [data])
 
     const joinHere = () => {
-        joinGroup({user: authData.user.id, group: group.id}).then(
-            res => {console.log(res)}
-        )
-    }
+        joinGroup({user: authData.user.id, group: group.id}).then(res => {
+            console.log(res);
+            refetchGroup();
+        });
+    };
 
        const leaveHere = () => {
-        leaveGroup({user: authData.user.id, group: group.id}).then(
-            res => {console.log(res)}
-        )
-    }
+        leaveGroup({user: authData.user.id, group: group.id}).then(res => {
+            console.log(res);
+            refetchGroup();
+        });
+    };
 
     const addEvent = () => {
         navigate('/event-form', {state: {group}});
@@ -82,6 +87,7 @@ function GroupDetails() {
                         return <div key={member.id}>
                             <MemberContainer>
                             <User user={member.user} />
+                                <p></p>
                             <p>{member.points} pts</p>
                             </MemberContainer>
                         </div>
