@@ -26,10 +26,18 @@ const StyledCalendarIcon = styled(CalendarTodayIcon)(({ theme }) => ({
 
 const Bets  =  styled("div")(({ theme }) => ({
     display: 'grid',
-    gridTemplateColumns: '2fr 1fr 1fr',
+    gridTemplateColumns: '2fr 2fr 2fr',
     margin: '5px 0 0 0',
-    justifyItems: 'center'
+    alignItems: 'center',
+    justifyItems: 'start',
+    paddingLeft: '100px'
+
 }));
+
+const BetsWrapper = styled("div")({
+  maxWidth: '600px',
+  margin: '0 auto',
+});
 
 const Container  =  styled("div")(({ theme }) => ({
     textAlign: 'center'
@@ -157,11 +165,16 @@ export function Event(){
                 event.bets
                 && event.bets.map(bet => {
                     return <div key={bet.id}>
+                        <BetsWrapper>
                         <Bets>
-                    <User user={bet.user}/>
+                           <User user={bet.user}/>
+
                         <h4>{bet.score1} : {bet.score2}</h4>
-                        <h4>{bet.points}pts</h4>
+
+                    <h4>{bet.points}pts</h4>
+
                     </Bets>
+                            </BetsWrapper>
                     <hr/>
                         </div>
                     })}

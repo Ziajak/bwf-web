@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import {Link, useParams, useNavigate, useAsyncValue} from 'react-router-dom';
 import { useFetchGroup } from "../../hooks/fetch-group";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { User } from '../user/user';
@@ -9,20 +9,29 @@ import { Button } from "@mui/material";
 import { Comments } from "../comments/comments";
 import { EventList } from "../events/event-list";
 import {styled} from "@mui/material/styles";
-import { useMediaQuery } from "@mui/material";
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 
 const MemberContainer  =  styled("div")(({ theme }) => ({
     display: 'grid',
-    gridTemplateColumns: 'auto 5fr 1fr',
-    alignItems: 'center'
+    gridTemplateColumns: '2fr 4fr 15fr',
+    alignItems: 'center',
+    justifyItems: 'start'
 }));
+
+const trophyColor = (trophy) => {
+  switch(trophy) {
+    case 'gold': return '#FFD700';
+    case 'silver': return '#C0C0C0';
+    case 'bronze': return '#CD7F32';
+    default: return 'gray';
+  }
+};
 
 function GroupDetails() {
 
     const { authData} = useAuth();
     const { id } = useParams();
-    const [refresh, setRefresh] = useState(0);
     const [data, loading, error, refetchGroup] = useFetchGroup(id);
     const [group, setGroup] = useState(null);
     const [isGroup, setInGroup] = useState(false);
@@ -31,6 +40,28 @@ function GroupDetails() {
 
     useEffect(()=>{
         if(data?.members){
+
+            data.members.sort((a, b) => b.points - a.points);
+
+            const availableTrophies = ['gold', 'silver', 'bronze'];
+            let currentTrophy = 0;
+            data.members.forEach((m, indx) => {
+                if(indx === 0){
+                    m.trophy = availableTrophies[currentTrophy];
+                } else {
+                    if (m.points !== data.members[indx - 1].points) {
+                        currentTrophy++;
+
+                    }
+                    if (currentTrophy < availableTrophies.length) {
+                        m.trophy = availableTrophies[currentTrophy];
+                    }
+
+                }
+        });
+
+
+
             if(authData?.user){
                 setInGroup(!!data.members.find( member => member.user.id === authData.user.id))
                 setIsAdmin(data.members.find( member => member.user.id === authData.user.id)?.admin)
@@ -87,7 +118,7 @@ function GroupDetails() {
                         return <div key={member.id}>
                             <MemberContainer>
                             <User user={member.user} />
-                                <p></p>
+                                <p><EmojiEventsIcon style={{ color: trophyColor(member.trophy) }} /></p>
                             <p>{member.points} pts</p>
                             </MemberContainer>
                         </div>
