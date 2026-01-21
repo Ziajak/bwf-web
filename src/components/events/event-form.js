@@ -24,20 +24,23 @@ export function EventForm(){
         const format = "yyyy-MM-dd'T'HH:mm";
         const utcTime = DateTime.fromFormat(time, format, {zone: 'utc'}).toFormat(format);
         const dataToSend = {team1, team2, 'time': utcTime, 'group': group.id};
-        const eventData = await createEvent(authData.token, dataToSend );
-        if(eventData){
+
+        try {
+            await createEvent(authData.token, dataToSend );
             toast.success('Event created')
             navigate(`/details/`+group.id)
-        } else {
-            toast.error('Error creating event')
         }
-        console.log(team1, team2, utcTime);
+        catch (err){
+            toast.error(err.message);
+        }
+
+
     }
 
     return (
         <div>
         <Link to={`/details/${group.id}`}><ChevronLeftIcon/></Link>
-        <h1>New Event for group {group.id}</h1>
+        <h1>New Event for group {group.location}</h1>
             <form onSubmit={handleSubmit}>
                 <CssTextField label="Team 1" onChange={e=> setTeam1(e.target.value)}/>
                 <CssTextField label="Team 2" onChange={e=> setTeam2(e.target.value)}/>

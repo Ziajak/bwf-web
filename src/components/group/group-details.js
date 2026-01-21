@@ -105,7 +105,9 @@ function GroupDetails() {
                         :
                         <Button onClick={()=> joinHere()} variant="contained" color="primary">Join Group</Button>
                     }
-                    { isAdmin && <Button onClick={()=> addEvent()} variant="contained" color="primary">Add new Event</Button>}
+                    {/*isAdmin && */}
+                        <Button onClick={()=> addEvent()} variant="contained" color="primary">Add new Event</Button>
+
 
 
                     <EventList events={group.events}/>

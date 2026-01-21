@@ -123,7 +123,7 @@ export function Event(){
 
     const setScores = async () => {
         try {
-        const eventData = await setResults(authData.token, {
+        await setResults(authData.token, {
           score1,
           score2,
           event: event.id,
