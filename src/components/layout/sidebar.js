@@ -9,7 +9,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { Link, useNavigate } from 'react-router-dom';
 import { User } from "../user/user";
 import { styled } from '@mui/material/styles';
-
+import { toast } from 'react-toastify';
 
 const MyBox = styled('div')(({ theme }) => ({
         width: '100px',
@@ -29,11 +29,13 @@ function Sidebar() {
     const  handleSubmit = async e => {
         e.preventDefault();
         // console.log(username, password);
-        const data = await auth({username, password})
-        //setAuth(data);
-        //localStorage.setItem('btw-user', JSON.stringify(data));
-        setAuth(data);
-    }
+         try {
+            const data = await auth({ username, password });
+            setAuth(data);
+        } catch (err) {
+            toast.error(err.message || 'Invalid credentials');
+        }
+    };
     const logout = () => {
         setAuth(null);
     }
