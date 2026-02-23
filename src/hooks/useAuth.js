@@ -8,7 +8,7 @@ const [authData, setAuthData] = useState(() => {
   return savedUser ? JSON.parse(savedUser) : null;
 });
 
-  // 🔹 Funkcja ustawiająca usera (i zapisująca w localStorage)
+
   const setAuth = (newUser) => {
     if (newUser) {
       localStorage.setItem("bwf-user", JSON.stringify(newUser));

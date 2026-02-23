@@ -32,6 +32,40 @@ export function register(userData) {
     }).then(status).catch(e => {console.log(e)})
 }
 
+export async function getUsers(token) {
+  const res = await fetch(`http://127.0.0.1:8000/api/users/`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  });
+
+  const data = await res.json();
+
+  if (res.status === 401) {
+  throw {
+    unauthorized: true,
+    message: 'Session expired. Please log in again.',
+  };
+}
+
+if (res.status === 403) {
+  throw {
+    forbidden: true,
+    message: data.detail
+  };
+}
+
+  if (!res.ok) {
+    throw {
+      message: 'Server error',
+    };
+  }
+
+  return data;
+}
+
+
 export function uploadAvatr(profileId, data) {
     return fetch(`http://127.0.0.1:8000/api/profile/${profileId}/`, {
         method: 'PUT',

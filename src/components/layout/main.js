@@ -8,7 +8,9 @@ import Account from "../user/account";
 import User from "../user/user";
 import { Event } from "../events/event"
 import {EventForm} from "../events/event-form";
-
+import ProtectedRoute from "../auth/ProtectedRoute";
+import UserList  from "../user/user-list";
+import {GroupForm} from "../group/group-form";
 function Main() {
 
     // const { authData } = useAuth();
@@ -22,7 +24,15 @@ function Main() {
             <Route path="/event/:id" element={<Event/>} />
             <Route path="/event-form/" element={<EventForm/>} />
             <Route path="/register" element={<Register/>}/>
-            <Route path="/account" element={<Account/>}/>
+            <Route path="/user_list" element={<UserList/>}/>
+            <Route path="/group-form" element={<GroupForm/>}/>
+            <Route path="/account" element={
+            <ProtectedRoute>
+              <Account />
+            </ProtectedRoute>
+          }
+        />
+
         </Routes>
     </div>
   );

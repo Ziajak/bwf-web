@@ -10,7 +10,7 @@ import { Comments } from "../comments/comments";
 import { EventList } from "../events/event-list";
 import {styled} from "@mui/material/styles";
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-
+import { toast } from 'react-toastify';
 
 const MemberContainer  =  styled("div")(({ theme }) => ({
     display: 'grid',
@@ -37,6 +37,13 @@ function GroupDetails() {
     const [isGroup, setInGroup] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
+    const requireAuth = () => {
+        if (!authData?.user) {
+            toast.warning('You must be log in');
+            return false;
+            }
+            return true;
+            };
 
     useEffect(()=>{
         if(data?.members){
@@ -73,6 +80,7 @@ function GroupDetails() {
     }, [data])
 
     const joinHere = () => {
+        if (!requireAuth()) return;
         joinGroup({user: authData.user.id, group: group.id}).then(res => {
             console.log(res);
             refetchGroup();
@@ -80,13 +88,15 @@ function GroupDetails() {
     };
 
        const leaveHere = () => {
-        leaveGroup({user: authData.user.id, group: group.id}).then(res => {
+           if (!requireAuth()) return;
+            leaveGroup({user: authData.user.id, group: group.id}).then(res => {
             console.log(res);
             refetchGroup();
         });
     };
 
     const addEvent = () => {
+        if (!requireAuth()) return;
         navigate('/event-form', {state: {group}});
     }
 

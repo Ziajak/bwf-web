@@ -16,7 +16,8 @@ const MyBox = styled('div')(({ theme }) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        position: 'relative'
+        position: 'relative',
+        gap: '8px'
 }));
 
 function Sidebar() {
@@ -38,11 +39,23 @@ function Sidebar() {
     };
     const logout = () => {
         setAuth(null);
+        localStorage.removeItem('authData');
+        navigate('/');
     }
 
     const account = () => {
 
         navigate('/account');
+    }
+
+    const list_users = () => {
+
+        navigate('/user_list');
+    }
+
+     const add_group = () => {
+
+        navigate('/group-form');
     }
 
 
@@ -82,6 +95,9 @@ function Sidebar() {
 
                     <Button variant="contained" color="primary" onClick={()=> account()}>My Account</Button>
 
+                    <Button variant="contained" color="primary" onClick={()=> list_users()}>List of users</Button>
+
+                    <Button variant="contained" color="primary" onClick={()=> add_group()}>Create group</Button>
 
 
                 </MyBox>
